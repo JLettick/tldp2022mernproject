@@ -73,7 +73,7 @@ function dropCollections() {
  
   export default function init_db() {
     
-    mongoose.connect('mongodb://127.0.0.1:27017/project')
+    mongoose.connect('mongodb://127.0.0.1:27017/finalspike')
 
     dropCollections()
     populateCollections() 
