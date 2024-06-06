@@ -1,6 +1,7 @@
 import Customer from '../models/customer.js'
 import bcrypt from 'bcrypt'
-
+import jwt from 'jsonwebtoken';
+import 'dotenv/config'
 
 const accountController = {
 
@@ -10,8 +11,13 @@ const accountController = {
       res.sendStatus(401);
     } else{
       const compare = await bcrypt.compare(req.body.password, user.PASSWORD);
-      console.log(compare);
+      
+      delete user.password
+      const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET, {expiresIn: "1h"});
       if (compare){
+        res.cookie("token", token, {
+          httpOnly: true
+        });
         res.sendStatus(200);
       }else{
         res.sendStatus(401);
