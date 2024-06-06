@@ -32,6 +32,7 @@ const registrationController = {
         REGISTRATION_DATE: req.body.registration_date, 
         NOTES: req.body.notes}).then(
       (r) => { 
+        logger.info(`${req.body.event_id} was created`)
         res.location(`/api/registrations/${r.REGISTRATION_ID}`)
         res.sendStatus(201)
       }, // OK
@@ -45,6 +46,7 @@ const registrationController = {
       if(err) {
         res.sendStatus(500)
       } else {
+        logger.info(`${req.params.registration_id} was deleted from registration`);
         res.sendStatus(200)
       }
     })

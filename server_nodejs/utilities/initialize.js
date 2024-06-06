@@ -3,7 +3,6 @@ import Customer from '../models/customer.js'
 import Event from '../models/event.js'
 import Registration from '../models/registration.js'
 
-
 function dropCollections() {
 
   Customer.collection.drop()
