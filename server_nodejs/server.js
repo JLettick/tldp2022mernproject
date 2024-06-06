@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import init_db from './utilities/initialize.js'
 import express from 'express'
 import accountRouter from './routes/account-routes.js'
