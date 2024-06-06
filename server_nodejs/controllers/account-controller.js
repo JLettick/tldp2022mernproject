@@ -1,26 +1,31 @@
 import Customer from '../models/customer.js'
+import bcrypt from 'bcrypt'
 
 
 const accountController = {
 
-  login: function(req, res) {
-    Customer.findOne(
-      {CUSTOMER_NAME: req.body.username, PASSWORD: req.body.password}, 
-      '', 
-      function(err, customer){
-        if(err || !customer) {
-          res.sendStatus(401) // Unauthorized
-        } else {
-          res.sendStatus(200) // OK
-        }
+  login: async function(req, res) {
+    const user = await Customer.findOne({CUSTOMER_NAME: req.body.username})
+      if (!user){
+      res.sendStatus(401);
+    } else{
+      const compare = await bcrypt.compare(req.body.password, user.PASSWORD);
+      console.log(compare);
+      if (compare){
+        res.sendStatus(200);
+      }else{
+        res.sendStatus(401);
       }
-    )
+    }
+
   },
 
-  register: function(req, res) {
+  register: async function(req, res) {
+    const password = await bcrypt.hash(req.body.password, 8);
+    console.log('password: ', password);
     Customer.create({ 
       CUSTOMER_NAME: req.body.name, 
-      PASSWORD: req.body.password,
+      PASSWORD: password,
       EMAIL: req.body.email
     }).then(
       () => res.sendStatus(201), // OK
